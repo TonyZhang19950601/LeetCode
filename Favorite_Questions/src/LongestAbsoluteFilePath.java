@@ -68,4 +68,32 @@ public class LongestAbsoluteFilePath {
         }
         return max;
     }
+    //a more concise and clear solution come up with when doing this question the second time
+    public int betterSolution(String input){
+        String[] paths = input.split("\n");
+        Stack<Integer> lenStack = new Stack<Integer>();
+        Stack<Integer> levelStack = new Stack<Integer>();
+        int max = 0;
+        for(int i=0;i<paths.length;i++){
+            int curLevel = 0;
+            for(;curLevel<paths[i].length();curLevel++){
+                if(paths[i].charAt(curLevel)!='\t') break;
+            }
+            int curLength = paths[i].length()-curLevel;
+            int len = 0;
+            while(!levelStack.isEmpty()&&levelStack.peek()>=curLevel){
+                levelStack.pop();
+                lenStack.pop();
+            }
+            if(!lenStack.isEmpty()) len = lenStack.peek();
+            if(paths[i].contains(".")){
+                max = Math.max(len+curLength, max);
+            }
+            else{
+                lenStack.push(len+curLength+1);
+                levelStack.push(curLevel);
+            }
+        }
+        return max;
+    }
 }
